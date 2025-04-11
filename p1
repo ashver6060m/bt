@@ -1,0 +1,22 @@
+import time, json
+
+chain = []
+new_transaction = []
+previous_hash = 'genesis'
+
+for i in range(2):  
+    nonce = 123 if i == 0 else input("Enter Nonce: ")
+    hash_val = 'block1' if i == 0 else input("Enter hash: ")
+    block = {
+        'index': len(chain) + 1,
+        'timestamp': int(time.time() * 1000),
+        'transaction': new_transaction.copy(),
+        'nonce': nonce,
+        'hash': hash_val,
+        'previous_block_hash': previous_hash
+    }
+    chain.append(block)
+    previous_hash = hash_val
+    new_transaction.clear()
+
+print(json.dumps(chain, indent=4))
