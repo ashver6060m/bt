@@ -1,0 +1,30 @@
+# pip install Flask requests
+from flask import Flask
+import requests
+
+app = Flask(__name__)
+
+# Fetch Bitcoin stats once
+btc = requests.get("https://api.blockchain.info/stats?format=json").json()
+
+@app.route("/")
+def home():
+    return f"Bitcoin Transaction Demo and Current Price is {btc['market_price_usd']}"
+
+@app.route("/blocks")
+def blocks():
+    return f"Bitcoin Transaction Demo and Block height is {btc['n_blocks_total']}"
+
+@app.route("/fees")
+def fees():
+    return f"Bitcoin Transaction Demo and Fees is {btc['total_fees_btc']}"
+
+@app.route("/mined")
+def mined():
+    return f"Bitcoin Transaction Demo and Blocks mined is {btc['n_blocks_mined']}"
+
+@app.route("/volume")
+def volume():
+    return f"Bitcoin Transaction Demo and Block volume is {btc['estimated_transaction_volume_usd']}"
+
+app.run(debug=True, port=3000)
