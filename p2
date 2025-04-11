@@ -1,0 +1,33 @@
+import time, json
+
+chain, new_transaction = [], []
+prev_hash, nonce, hash_val = 'genesis', 123, 'block1'
+
+def create_block(nonce, hash_val, prev_hash, new_transaction):
+    return {
+        'index': len(chain) + 1,
+        'timestamp': int(time.time() * 1000),
+        'transaction': new_transaction.copy(),
+        'nonce': nonce,
+        'hash': hash_val,
+        'previous_block_hash': prev_hash
+    }
+
+# Add genesis block
+chain.append(create_block(nonce, hash_val, prev_hash, new_transaction))
+new_transaction.clear()
+
+for _ in range(int(input("Enter No of Blocks: "))):
+    for _ in range(int(input("Enter No of Transactions: "))):
+        new_transaction.append({
+            'amount': input("Enter amount: "),
+            'sender': input("Enter sender: "),
+            'recipient': input("Enter recipient: ")
+        })
+    nonce = input("Enter Nonce: ")
+    hash_val = input("Enter hash: ")
+    prev_hash = chain[-1]['hash']
+    chain.append(create_block(nonce, hash_val, prev_hash, new_transaction))
+    new_transaction.clear()
+
+print(json.dumps(chain, indent=2))
